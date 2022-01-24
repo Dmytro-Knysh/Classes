@@ -1,0 +1,176 @@
+#include <iostream>
+#include<vector>
+using namespace std;
+class vec
+{
+private:
+    string name;
+    int* mass;
+    int size;
+public:
+    vec();
+    vec(string name, int size);
+    ~vec();
+    int sizes();
+    vec next();
+    int& operator[] (const int index);
+    vec operator-(const vec& A);
+    vec operator=(vec A);
+    friend ostream& operator<<(ostream& out, vec& obj);
+    friend istream& operator>>(istream& stream, vec& obj);
+    vec(const vec& obj);
+};
+vec::vec()
+{
+    mass = new int[5];
+    size = 5;
+    for (int i = 0; i < 5; i++)
+    {
+        mass[i] = 0;
+    }
+}
+vec::vec(string names, int length)
+{
+    name = names;
+    size = length;
+    mass = new int[length];
+    for (int i = 0; i < length; i++)
+    {
+        mass[i] = 0;
+    }
+}
+vec::vec(const vec& obj)
+{
+    size = obj.size;
+    mass = new int[size];
+    for (int i = 0 ; i< size;i++)
+    {
+        mass[i] = obj.mass[i];
+    }
+    name = obj.name;
+}
+vec::~vec() 
+{
+    if (mass)
+    {
+        delete[]mass;
+        mass = 0;
+        size = 0;
+        name ="";
+    }
+}
+int vec::sizes()
+{
+    return size;
+}
+vec vec::next()
+{
+    for (int i = 0; i < size; i++)
+    {
+        mass[i]+=1;
+    }
+    return *this;
+}
+int& vec::operator[] (const int index) 
+{
+    if(index < size && index >= 0)
+    return mass[index];
+}
+vec vec::operator=(vec A)
+{
+    size = A.size;
+    mass = new int[size];
+    name = A.name;
+    for (int i = 0; i < size; i++)
+    {
+        mass[i] = A.mass[i];
+    }
+    return *this;
+}
+vec vec::operator-(const vec& A)
+{
+    int z = 0;
+    int k = 0;
+    bool flag = true;
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < A.size; j++)
+        {
+            if (mass[i] == A.mass[j])
+            {
+                flag = false;
+            }
+        }
+        if (flag)
+        {
+            z++;
+        }
+        else
+        {
+            flag = true;
+        }
+    }
+    vec temp("temp", z);
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < A.size; j++)
+        {
+            if (mass[i] == A.mass[j])
+            {
+                flag = false;
+            }
+        }
+        if (flag)
+        {
+            temp[k] = mass[i];
+            k++;
+        }
+        else
+        {
+            flag = true;
+        }
+    }
+    return temp;
+}
+ostream& operator<<(ostream& out, vec& obj)
+{
+    for(int i = 0; i < obj.size; i++)
+    out << obj[i]<<" ";
+    return out;
+}
+istream& operator>>(istream& stream, vec& obj)
+{
+    for (int i = 0; i < obj.size; i++)
+    {
+        cin >> obj.mass[i];
+    }
+    return stream;
+}
+void F() {
+    vec A("A", 3);
+    cout << "Input A" << endl;
+    cin >> A;
+    vec B("B", 4);
+    cout << "Input B" << endl;
+    cin >> B;
+    vec C = A;
+    vec D("D", 1);
+    vec Z("Z", 2);
+    Z.next();
+    D = A - B;
+    cout << A;
+    cout << endl;
+    cout << B;
+    cout << endl;
+    cout << C;
+    cout << endl;
+    cout << D;
+    cout << endl;
+    cout << Z;
+}
+int main()
+{
+    SetConsoleOutputCP(1251);
+    F();
+    return 0;
+}
