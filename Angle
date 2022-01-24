@@ -1,0 +1,212 @@
+package com.company;
+
+import java.util.Scanner;
+
+public class Angle {
+    private int angle;
+    private int minute;
+    public double to_Rad()
+    {
+        double rad = Math.toRadians(angle) + minute*0.000290888209;
+        return rad;
+    }
+    public double Get_Sin()
+    {
+        double sin = Math.sin(to_Rad());
+        return sin;
+    }
+    public double Change_Angle(int temp)
+    {
+        return angle+temp;
+    }
+    public int angle_compare(Angle a)
+    {
+        if(a.to_Rad() > this.to_Rad())
+        {
+            return 0;
+        }
+        else if(a.to_Rad() < this.to_Rad())
+        {
+            return 1;
+        }
+        if(a.to_Rad() == this.to_Rad())
+        {
+            return -1;
+        }
+        return 5;
+    }
+    public void Set_angle(int A)
+    {
+        this.angle = A;
+    }
+    public void Set_minute(int B)
+    {
+        this.minute = B;
+    }
+    public int GetAngle()
+    {
+        return angle;
+    }
+    public int GetMinutes()
+    {
+        return minute;
+    }
+    public Angle()
+    {
+        this.angle = 20;
+        this.minute = 50;
+    }
+    public Angle(int A, int B)
+    {
+        this.angle = A;
+        this.minute = B;
+    }
+    @Override
+    public String toString()
+    {
+        return "First:"+this.angle+" Second" + this.minute;
+    }
+    public Angle input()
+    {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Input first:");
+        int number = sc.nextInt();
+        Scanner sc1 = new Scanner(System.in);
+        System.out.println("Input second:");
+        int number1 = sc1.nextInt();
+        this.angle = number;
+        this.minute = number1;
+        return this;
+    }
+    public Angle angle_change( )
+    {
+        if(angle > 360)
+        {
+            while(angle > 360)
+                angle = angle - 360;
+        }
+        return this;
+    }
+
+}
+public class Triangle extends Angle {
+    private double A;
+    private double B;
+    private Angle C;
+    public double get_sides_A()
+    {
+        return A;
+    }
+    public double get_sides_B()
+    {
+        return B;
+    }
+    public Angle get_angle()
+    {
+        return C;
+    }
+    public double set_B(double Q)
+    {
+        return B = Q;
+    }
+    public double set_A(double W)
+    {
+        return A = W;
+    }
+    public Angle set_C(int e, int r)
+    {
+        C = new Angle(e, r);
+        return C;
+    }
+    public Triangle()
+    {
+        this.A = 3;
+        this.B = 3;
+        this.C = new Angle(45,0);
+    }
+    public Triangle(double A, double B, int C, int D)
+    {
+        this.A = A;
+        this.B = B;
+        this.C = new Angle(C,D);
+    }
+    public double found_S()
+    {
+        return 0.5*A*B* C.Get_Sin();
+    }
+    public double found_P()
+    {
+        return Math.sqrt((Math.pow(B,2)+Math.pow(A,2) - 2*A*B * Math.cos(C.to_Rad())));
+    }
+    public double found_H()
+    {
+        return B* C.Get_Sin();
+    }
+    public int type_triangle()
+    {
+        if(C.GetAngle() == 60 && A == B)
+        {
+            return 1;
+        }
+        if(A == B && C.GetAngle() != 60)
+        {
+            return 0;
+        }
+        if(C.GetAngle() == 90)
+        {
+            return -1;
+        }
+        if(A != B)
+        {
+            return -2;
+        }
+        return 100;
+    }
+}
+public class Main
+{
+
+    public static void main(String[] args)
+    {
+        Angle A = new Angle();
+        Angle S = new Angle();
+        A.input();
+        System.out.println(A.to_Rad());
+        System.out.println(A.angle_change());
+        System.out.println(A.Get_Sin());
+        System.out.println(A.toString());
+        System.out.println(A.Change_Angle(2));
+        if(A.angle_compare(A, S) == 1)
+        {
+            System.out.println("Перший кут більший");
+        }
+        if(A.angle_compare(A,S) == 0)
+        {
+            System.out.println("Другий кут більший");
+        }
+        if(A.angle_compare(A, S) == -1)
+        {
+            System.out.println("Кути однакові");
+        }
+        Triangle C = new Triangle(3,5, A.GetAngle(), A.GetMinutes());
+        System.out.println(C.found_H());
+        System.out.println(C.found_P());
+        System.out.println(C.found_S());
+        if(C.type_triangle() == 1)
+        {
+            System.out.println("Рівносторонній");
+        }
+        if(C.type_triangle() == 0)
+        {
+            System.out.println("Рівнобедрений");
+        }
+        if(C.type_triangle() == -1)
+        {
+            System.out.println("Прямокутний");
+        }
+        if(C.type_triangle() == -2)
+        {
+            System.out.println("Різносторонній");
+        }
+    }
+}
